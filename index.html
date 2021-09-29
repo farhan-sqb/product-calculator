@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+<meta content="utf-8" http-equiv="encoding">
+
+<style>
+body{
+	background:#FFF;
+}
+* {
+	box-sizing: border-box;
+}
+/* Create four equal columns that floats next to each other */
+.column {
+	background-color:#FFF;
+	float: left;
+  	width: 20%;
+  	padding-left: 5px;
+  	height: 60px; /* Should be removed. Only for demonstration */
+}
+
+.column_1, .column_3 {
+	background-color:#FFF;
+	float: left;
+  	width: 80%;
+  	padding-left: 5px;
+  	height: 60px; /* Should be removed. Only for demonstration */
+}
+.column_2, .column_4 {
+	background-color:#FFF;
+	float: left;
+  	width: 20%;
+  	padding-left: 5px;
+  	height: 60px; /* Should be removed. Only for demonstration */
+}
+
+/* Clear floats after the columns */
+.row:after {
+  	content: "";
+  	display: table;
+  	clear: both;
+}
+.cal_heading{
+	font-family:Arial, Helvetica, sans-serif;
+	font-weight:500;
+	color:#000;
+}
+input[type="text"], input[type="number"]{
+	width: 98%;
+	height: 38px;
+	background: #f9fafa;
+	background-color: rgb(249, 250, 250);
+	border: 2px solid #000;
+	padding: 0px 5px 0px 5px;
+	line-height: 30px;
+	border-radius: 8px;
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+	outline: none;
+}
+.custom-select{
+	width: 29%;
+	height: 38px;
+	background: #f9fafa;
+	border: 2px solid #000;
+	padding: 0px 5px 0px 5px;
+	line-height: 30px;
+	border-radius: 8px;
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+	outline: none;
+	float:right;
+	margin-right:5px;
+}
+.custom-select-fields{
+	width: 29%;
+	height: 38px;
+	background: #f9fafa;
+	border: 2px solid #000;
+	padding: 0px 5px 0px 5px;
+	line-height: 30px;
+	border-radius: 8px;
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+	outline: none;
+}
+#row_0{
+	margin-top:115px;
+	padding-bottom: 20px;
+	background: #FFF;
+}
+#add_product{
+	cursor:pointer;
+}
+#add_product:before{
+	content: ' \002B';	
+}
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[name="quantity[]"] {
+	width:67%;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+.label{
+	display:none;	
+}
+
+/* Responsive layout - makes the four columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 600px) {
+	.column_3{
+		display:none;	
+	}
+	.column, .column_1, .column_2, .column_4 {
+		width: 100%;
+	}
+	
+	#row_0{
+		display:none;	
+	}
+	#row_1{
+		margin-top:5px;	
+	}
+	.label{
+		display:block;
+		font-family:Arial, Helvetica, sans-serif;
+		color:#000;
+		padding-left:5px;
+	}
+}
+</style>
+</head>
+<body>
+
+<div class="row" id="row_0">
+    
+    <div class="column">
+    	<h2 class="cal_heading">Products</h2>
+    </div>
+    
+    <div class="column">
+    	<h2 class="cal_heading">
+        	Quantity
+            <select id="quantity_type_0" class="custom-select" style="display:none;">
+                <option value="grams">grams</option>
+                <option value="lbs">lbs</option>
+            </select>
+        </h2>
+    </div>
+    
+    <div class="column">
+    	<h2 class="cal_heading">Unit Total</h2>
+    </div>
+    
+    <div class="column">
+    	<h2 class="cal_heading">Unit Price</h2>
+    </div>
+    
+    <div class="column">
+    	<h2 class="cal_heading">Product Total</h2>
+    </div>
+    
+</div>
+
+
+<div class="row" id="row_1">
+    
+    <div class="column">
+    	<label class="label">Product</label>
+        <input type="text" name="products[]" />
+    </div>
+    
+    <div class="column">
+    	<label class="label">Quantity</label>
+        <input type="number" name="quantity[]" onChange="perform_calculation()" />
+        <select name="quantitytype[]" class="custom-select-fields">
+            <option value="grams">grams</option>
+            <option value="lbs">lbs</option>
+        </select>
+    </div>
+    
+    <div class="column">
+    	<label class="label">Unit Total</label>
+		<input type="number" name="unittotal[]" onChange="perform_calculation()" />
+    </div>
+    
+    <div class="column">
+    	<label class="label">Unit Price</label>
+		<input type="number" name="unitprice[]" onChange="perform_calculation()" />
+    </div>
+    
+    <div class="column">
+    	<label class="label">Product Total</label>
+		<input type="number" name="producttotal[]" />
+    </div>
+    
+</div>
+
+<!--Final Rows of Calculator-->
+<div class="row" id="row_final_1">
+    
+    <div class="column_1">
+    	<h2 onClick="add_product()" id="add_product" class="cal_heading">&nbsp;&nbsp;Add Product</h2>
+    </div>
+    
+    <div class="column_2">
+		<h2 class="cal_heading">Total Cost</h2>
+    </div>
+    
+</div>
+<div class="row" id="row_final_2">
+    
+    <div class="column_3">
+    	&nbsp;
+    </div>
+    <div class="column_4">
+		<input type="text" id="total_cost" />
+    </div>
+    
+</div>
+
+<input type="hidden" id="current_product_number" value="1" />
+
+</body>
+
+<script type="text/javascript">
+	
+	function perform_calculation(){
+		var product 		= document.getElementsByName('products[]');
+		var quantity 		= document.getElementsByName('quantity[]');
+		var unittotal 		= document.getElementsByName('unittotal[]');
+		var unitprice 		= document.getElementsByName('unitprice[]');
+		var producttotal 	= document.getElementsByName('producttotal[]');
+		
+		var total_cost = 0;
+		for (var i = 0; i <product.length; i++) {
+			
+			if(quantity[i].value != "" && unittotal[i].value != "" && unitprice[i].value != ""){
+				
+				var calculate_row = (quantity[i].value * unitprice[i].value) / unittotal[i].value;
+			 	
+				producttotal[i].value = parseFloat(calculate_row).toFixed(2);
+				
+				total_cost = total_cost +  calculate_row;
+			}
+			
+		}
+		
+		document.getElementById("total_cost").value = parseFloat(total_cost).toFixed(2);
+	
+	}
+
+	function add_product(){
+		
+		var pNumber = document.getElementById("current_product_number").value;
+		
+		var npNumber = parseInt(pNumber) + parseInt(1);
+		
+		//This Create New Row for the Product Item
+		var node = document.querySelector("#row_"+pNumber),
+		element = document.createElement("div");
+		
+		element.id = "row_"+npNumber;
+		element.className = "row";
+		
+		//This Create the Inner Items for the New Product Row Start
+		element.innerHTML = `
+			<div class="column">
+				<label class="label">Product</label>
+				<input type="text" name="products[]" />
+			</div>
+			
+			<div class="column">
+				<label class="label">Quantity</label>
+				<input type="number" name="quantity[]" onChange="perform_calculation()" />
+				<select name="quantitytype[]" class="custom-select-fields">
+					<option value="grams">grams</option>
+					<option value="lbs">lbs</option>
+				</select>
+			</div>
+			
+			<div class="column">
+				<label class="label">Unit Total</label>
+				<input type="number" name="unittotal[]" onChange="perform_calculation()" />
+			</div>
+			
+			<div class="column">
+				<label class="label">Unit Price</label>
+				<input type="number" name="unitprice[]" onChange="perform_calculation()" />
+			</div>
+			
+			<div class="column">
+				<label class="label">Product Total</label>
+				<input type="number" name="producttotal[]" />
+			</div>
+		`;
+		//This Create the Inner Items for the New Product Row Ends
+		node.parentNode.insertBefore(element, node.nextSibling);
+		
+		//var elements = document.getElementById('row_3').children;
+		
+		
+		document.getElementById("current_product_number").value = npNumber;
+		
+	}
+</script>
+
+</html>
